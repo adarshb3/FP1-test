@@ -1,5 +1,5 @@
 import streamlit as st
-import PyPDF4
+import PyPDF2
 from sklearn import datasets
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
