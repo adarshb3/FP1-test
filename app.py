@@ -1,11 +1,11 @@
 import streamlit as st
+import PyPDF2
 from sklearn import datasets
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.svm import SVC
 import joblib
 import numpy as np
-import PyPDF2
 
 # Load a dummy dataset
 data = datasets.load_breast_cancer()
@@ -45,15 +45,17 @@ def extract_text_from_pdf(file):
 def main():
     st.title("Job Acceptance Prediction")
     
-    uploaded_file = st.file_uploader("Upload your resume", type="pdf")
+    uploaded_files = st.file_uploader("Upload your resume", type="pdf", accept_multiple_files=True)
     
-    if uploaded_file is not None:
+    for uploaded_file in uploaded_files:
         resume_contents = extract_text_from_pdf(uploaded_file)
         resume_vectorized = loaded_vectorizer.transform([resume_contents])
         prediction = loaded_model.predict(resume_vectorized)
         
+        st.write("File:", uploaded_file.name)
         st.write("Prediction:", prediction[0])
         st.write("Confidence Score:", np.max(model.decision_function(resume_vectorized)))
+        st.write("---")
     
 if __name__ == "__main__":
     main()
